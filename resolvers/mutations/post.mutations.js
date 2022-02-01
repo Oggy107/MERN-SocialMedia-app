@@ -41,17 +41,16 @@ const likePost = async (parent, args, context, info) => {
     if (!post)
         throw new Error('Post not found');
 
-    let like = post.likes.find(like => like.user._id == userPublic._id);
+    const like = post.likes.find(like => like.user._id == userPublic._id);
 
     if (like)
         post.likes.pull(like);
     else
     {
-        like = {
+        post.likes.push({
             user: userPublic,
             createdAt: new Date().toISOString()
-        };
-        post.likes.push(like);
+        });
     }
 
     await post.save();
