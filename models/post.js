@@ -5,24 +5,49 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: [true, 'must be provided']
     },
-    username: String,
+    user: {
+        username: String,
+        email: String,
+        _id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'users'
+        }
+    },
     comments: [
         {
             body: String,
-            username: String,
-            createdAt: String
+            user: {
+                username: String,
+                email: String,
+                _id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'users'
+                }
+            },
+            createdAt: String,
         }
     ],
     likes: [
         {
-            username: String,
+            user: {
+                username: String,
+                email: String,
+                _id: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'users'
+                }
+            },
             createdAt: String
         }
     ],
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'users'
-    }
+    user: {
+        username: String,
+        email: String,
+        _id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'users'
+        }
+    },
 }, {timestamps: true})
 
 const Post = mongoose.model('post', postSchema);
