@@ -17,21 +17,21 @@ const typeDefs = gql`
     type Comment {
         body: String!,
         createdAt: String!,
-        _id: ID,
+        _id: ID!,
         user: UserPublic!
     }
 
     type Like {
-        createdAt: String
-        user: UserPublic,
+        createdAt: String!
+        user: UserPublic!,
     }
 
     type Post {
-        body: String,
-        comments: [Comment],
-        likes: [Like],
-        _id: ID,
-        user: UserPublic
+        body: String!,
+        comments: [Comment]!,
+        likes: [Like]!,
+        _id: ID!,
+        user: UserPublic!
     }
 
     type Query {
@@ -44,10 +44,9 @@ const typeDefs = gql`
         loginUser(email: String!, password: String!): User!
         createPost(body: String!): Post!
         deletePost(postId: ID!): Boolean!
-        likePost(postId: ID!): Like!
-        unlikePost(postId: ID!): Boolean!
-        commentPost(postId: ID!, body: String!): Comment!
-        uncommentPost(postId: ID!, commentId: ID!): Boolean!
+        likePost(postId: ID!): Post!
+        commentPost(postId: ID!, body: String!): Post!
+        uncommentPost(postId: ID!, commentId: ID!): Post!
     }
 `;
 

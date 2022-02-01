@@ -41,40 +41,22 @@ const likePost = async (parent, args, context, info) => {
     if (!post)
         throw new Error('Post not found');
 
-    const like = {
-        user: userPublic,
-        createdAt: new Date().toISOString()
-    };
+    let like = post.likes.find(like => like.user._id == userPublic._id);
 
-    if (post.likes.find(like => like.user._id == userPublic._id))
-        throw new Error('Already liked');
-
-    post.likes.push(like);
+    if (like)
+        post.likes.pull(like);
+    else
+    {
+        like = {
+            user: userPublic,
+            createdAt: new Date().toISOString()
+        };
+        post.likes.push(like);
+    }
 
     await post.save();
 
-    return like;
-}
-
-const unlikePost = async (parent, args, context, info) => {
-    const user = context.authenticate(context.req.headers.authorization);
-
-    const { postId } = args;
-
-    const post = await Post.findById(postId);
-
-    if (!post)
-        throw new Error('Post not found');
-
-    const like = post.likes.find(like => like.user._id == user._id);
-
-    if (!like)
-        throw new Error('Like not found');
-
-    post.likes.pull(like);
-    await post.save();
-
-    return true;
+    return post;
 }
 
 const commentPost = async (parent, args, context, info) => {
@@ -88,6 +70,9 @@ const commentPost = async (parent, args, context, info) => {
     if (!post)
         throw new Error('Post not found');
 
+    if (!body)
+        throw new Error('Comment body must be provided');
+
     const comment = {
         body,
         user: userPublic,
@@ -98,7 +83,7 @@ const commentPost = async (parent, args, context, info) => {
 
     await post.save();
 
-    return comment;
+    return post;
 }
 
 const uncommentPost = async (parent, args, context, info) => {
@@ -120,14 +105,13 @@ const uncommentPost = async (parent, args, context, info) => {
 
     await post.save();
 
-    return true;
+    return post;
 }
 
 module.exports =  {
     createPost,
     deletePost,
     likePost,
-    unlikePost,
     commentPost,
     uncommentPost
 }

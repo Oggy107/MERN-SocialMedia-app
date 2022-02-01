@@ -1,5 +1,5 @@
 const { registerUser, loginUser } = require('./user.mutations');
-const { createPost, deletePost, likePost, unlikePost, commentPost, uncommentPost } = require('./post.mutations');
+const { createPost, deletePost, likePost, commentPost, uncommentPost } = require('./post.mutations');
 
 const mutations = {
     registerUser,
@@ -7,7 +7,6 @@ const mutations = {
     createPost,
     deletePost,
     likePost,
-    unlikePost,
     commentPost,
     uncommentPost
 };
