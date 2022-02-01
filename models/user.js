@@ -23,39 +23,20 @@ const userSchema = new mongoose.Schema({
     }
 }, {timestamps: true});
 
-const genJWT = async function(id, username, email) {
+userSchema.pre('save', async function() {
+    this.password = await bcrypt.hash(this.password, 10);
+})
+
+userSchema.methods.genJWT = function() {
     try {
-        return jwt.sign({id, username, email}, process.env.JWT_SECRET);
+        return jwt.sign({_id: this._id, username: this.username, email: this.email}, process.env.JWT_SECRET, {expiresIn: '10 days'});
     } catch (error) {
         throw new UserInputError(error.message);
     }
 }
 
-userSchema.statics.register = async function(username, email, password) {
-    try {
-        password = await bcrypt.hash(password, 10);
-        const user = await this.create({username, email, password});
-        const token = genJWT(user._id, user.username, user.email);
-        console.log(user);
-        return {id: user._id, username: user.username, email: user.email, token};
-    } catch (error) {
-        throw new UserInputError(error.message);
-    }
-}
-
-userSchema.statics.login = async function(email, password) {
-    const user = await this.findOne({email: email});
-
-    if (!user)
-        throw new AuthenticationError("Invalid Credentials");
-
-    const result = await bcrypt.compare(password, user.password);
-
-    if (!result)
-        throw new AuthenticationError("Invalid Credentials");
-
-    const token = genJWT(user._id, user.username, email);
-    return {id: user._id, username: user.username, email, token};
+userSchema.methods.verify = function(password) {
+    return bcrypt.compare(password, this.password);
 }
 
 const User = mongoose.model('user', userSchema);
