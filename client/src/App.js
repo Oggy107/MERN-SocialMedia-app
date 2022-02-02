@@ -1,18 +1,20 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+import Home from './Pages/Home';
+import Login from './Pages/Login';
+import Register from './Pages/Register';
 
 import './App.css';
 import 'semantic-ui-css/semantic.min.css';
-import {Button} from 'semantic-ui-react'
-
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Button>hello</Button>} />
-                <Route path="/login" element={<h1>login page</h1>} />
-                <Route path="/register" element={<h2>register page</h2>} />
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
             </Routes>
         </Router>
     );
