@@ -20,7 +20,7 @@ const main = async () => {
             }
         });
 
-        const serverInfo = await server.listen(process.env.PORT || 3000);
+        const serverInfo = await server.listen(process.env.PORT || 5000);
         console.log(`Server is up at ${serverInfo.url}`);
 
     } catch (error) {
