@@ -3,7 +3,8 @@ import { Menu } from 'semantic-ui-react';
 import { useNavigate } from 'react-router-dom';
 
 const MenuCustom = () => {
-    const [state, setState] = React.useState({activeItem: 'home'});
+    const path = window.location.pathname == '/' ? 'home' : window.location.pathname.slice(1);
+    const [state, setState] = React.useState({activeItem: path});
     const navigate = useNavigate();
 
     const handleItemClick = (e, {name}) => {
@@ -12,7 +13,7 @@ const MenuCustom = () => {
     }
 
     return (
-        <Menu pointing secondary>
+        <Menu pointing secondary size='huge' color='teal'>
             <Menu.Item
                 name='home'
                 active={state.activeItem === 'home'}
