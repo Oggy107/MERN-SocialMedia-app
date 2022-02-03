@@ -3,7 +3,7 @@ import { Menu } from 'semantic-ui-react';
 import { useNavigate } from 'react-router-dom';
 
 const MenuCustom = () => {
-    const path = window.location.pathname == '/' ? 'home' : window.location.pathname.slice(1);
+    const path = window.location.pathname === '/' ? 'home' : window.location.pathname.slice(1);
     const [state, setState] = React.useState({activeItem: path});
     const navigate = useNavigate();
 

@@ -10,7 +10,7 @@ const createPost = async (parent, args, context, info) => {
             body,
             user: userPublic,
             comments: [],
-            likes: []
+            likes: [],
         });
     } catch (error) {
         throw new Error(error.message);

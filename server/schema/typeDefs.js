@@ -31,7 +31,8 @@ const typeDefs = gql`
         comments: [Comment]!,
         likes: [Like]!,
         _id: ID!,
-        user: UserPublic!
+        user: UserPublic!,
+        createdAt: String!,
     }
 
     type Query {

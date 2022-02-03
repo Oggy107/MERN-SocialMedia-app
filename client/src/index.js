@@ -10,14 +10,15 @@ import App from './App';
 
 const client = new ApolloClient({
     uri: 'http://localhost:5000',
+    // headers: {
+    //     authorization: `Bearer ${localStorage.getItem('token')}`
+    // },
     cache: new InMemoryCache(),
 });
 
 ReactDOM.render(
-    <React.StrictMode>
         <ApolloProvider client={client}>
             <App />
-        </ApolloProvider>
-    </React.StrictMode>,
+        </ApolloProvider>,
     document.getElementById('root')
 );
