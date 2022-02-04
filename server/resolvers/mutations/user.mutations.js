@@ -10,7 +10,10 @@ const registerUser = async (parent, args, context, info) => {
 
         return {_id: user._id, username: user.username, email: user.email, token};
     } catch (error) {
-        throw new UserInputError(error.message);
+        if (error.code === 11000)
+            throw new UserInputError("Email already exists");
+        else
+            throw new UserInputError(error.message);
     }
 }
 

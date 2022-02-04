@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Container, Message } from 'semantic-ui-react';
 import { gql, useMutation } from '@apollo/client';
 
-const LOGIN = gql`
+const LOGIN_USER = gql`
     mutation loginUser($email: String!, $password: String!) {
         loginUser(email: $email, password: $password) {
         username
@@ -15,11 +15,17 @@ const LOGIN = gql`
 
 const Login = () => {
     const [state, setState] = React.useState({email: '', password: ''});
-    const [loginUser, { data, loading, error }] = useMutation(LOGIN);
 
     const initialClientErrorState = {emailError: '', passwordError: ''};
     const [clientErrorState, setClientErrorState] = React.useState(initialClientErrorState);
-    const [serverErrorState, setServerErrorState] = React.useState('');
+
+    const [loginUser, { loading, error: serverError }] = useMutation(LOGIN_USER, {
+        update: (cache, { data: { loginUser: user}}) => {
+            console.log(user);
+            localStorage.setItem('token', user.token);
+        },
+        variables: state
+    });
 
     const handleChange = (e, {name, value}) => {
         setState({...state, [name]: value});
@@ -35,41 +41,28 @@ const Login = () => {
         tempErrorState = state.email === '' ? {...tempErrorState, emailError: "Email is required"} :
             !state.email.match(emailRegEx) ? {...tempErrorState, emailError: "Email is invalid"} :
             {...tempErrorState, emailError: ''};
-
+            
         setClientErrorState(tempErrorState);
+
+        if (JSON.stringify(tempErrorState) === JSON.stringify(initialClientErrorState))
+            return true;
+
+        return false;
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        validate();
-
-        if (!(JSON.stringify(clientErrorState) === JSON.stringify(initialClientErrorState)))
+        if (!validate())
             return;
 
-        loginUser({
-            variables: {
-                email: state.email,
-                password: state.password
-            }
-        }).then(({data: {loginUser: user}}) => {
-            console.log(user);
-            setServerErrorState('');
-            localStorage.setItem('token', user.token);
-        }).catch(error => {
-            setServerErrorState(error.message);
-            console.error('[ERROR]: ', error);
-        });
+        loginUser();
     }
-
-    // React.useEffect(() => {
-    //     console.log(serverErrorState);
-    // }, [serverErrorState])
 
     return (
         <Container>
             <h1>Login</h1>
-            <Form onSubmit={handleSubmit} error={serverErrorState ? true : false}>
+            <Form onSubmit={handleSubmit} error={serverError ? true : false}>
                 <Form.Input 
                     label="Email"
                     placeholder="example@gmail.com"
@@ -84,7 +77,7 @@ const Login = () => {
                     onChange={handleChange}
                     error={clientErrorState.passwordError ? clientErrorState.passwordError : null}
                 />
-                <Message error header='Error' content={serverErrorState} />
+                <Message error header={serverError && serverError.name} content={serverError && serverError.message} />
                 <Form.Button 
                     type="submit"
                     content="Login"
