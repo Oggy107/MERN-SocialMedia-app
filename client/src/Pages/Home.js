@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery, gql } from '@apollo/client';
-import { Grid, Divider } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 
 import PostCard from '../components/PostCard';
 
