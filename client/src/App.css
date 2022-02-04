@@ -2,3 +2,8 @@
     text-align: center;
     margin: 25px 0;
 }
+
+.form-container {
+    max-width: 450px;
+    margin: auto;
+}

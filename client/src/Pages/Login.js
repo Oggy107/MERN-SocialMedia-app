@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Container, Message } from 'semantic-ui-react';
+import { Form, Message } from 'semantic-ui-react';
 import { gql, useMutation } from '@apollo/client';
 
 const LOGIN_USER = gql`
@@ -60,7 +60,7 @@ const Login = () => {
     }
 
     return (
-        <Container>
+        <div className='form-container'>
             <h1>Login</h1>
             <Form onSubmit={handleSubmit} error={serverError ? true : false}>
                 <Form.Input 
@@ -85,7 +85,7 @@ const Login = () => {
                     primary
                 />
             </Form>
-        </Container>
+        </div>
     );
 };
 
