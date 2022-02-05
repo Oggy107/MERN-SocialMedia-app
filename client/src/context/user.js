@@ -19,7 +19,7 @@ const userReducer = (state, action) => {
     }
 }
 
-const userProvider = (props) => {
+const UserProvider = (props) => {
     const [state, dispatch] = React.useReducer(userReducer, {user: null});
 
     const login = (data) => {
@@ -37,4 +37,4 @@ const userProvider = (props) => {
     );
 }
 
-export {UserContext, userProvider};
+export {UserContext, UserProvider};

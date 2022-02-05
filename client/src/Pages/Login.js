@@ -3,6 +3,8 @@ import { Form, Message } from 'semantic-ui-react';
 import { gql, useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 
+import { UserContext } from '../context/user';
+
 const LOGIN_USER = gql`
     mutation loginUser($email: String!, $password: String!) {
         loginUser(email: $email, password: $password) {
@@ -15,6 +17,7 @@ const LOGIN_USER = gql`
 `
 
 const Login = () => {
+    const { login } = React.useContext(UserContext);
     const navigate = useNavigate();
     const [state, setState] = React.useState({email: '', password: ''});
 
@@ -23,8 +26,8 @@ const Login = () => {
 
     const [loginUser, { loading, error: serverError }] = useMutation(LOGIN_USER, {
         update: (cache, { data: { loginUser: user}}) => {
-            console.log(user);
             localStorage.setItem('token', user.token);
+            login(user);
             navigate('/home');
         },
         variables: state

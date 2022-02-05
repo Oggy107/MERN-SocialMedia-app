@@ -2,7 +2,10 @@ import React from 'react';
 import { Menu } from 'semantic-ui-react';
 import { useNavigate } from 'react-router-dom';
 
+import { UserContext } from '../context/user';
+
 const MenuCustom = () => {
+    const { state: userState} = React.useContext(UserContext);
     const path = window.location.pathname === '/' ? 'home' : window.location.pathname.slice(1);
     const [state, setState] = React.useState({activeItem: path});
     const navigate = useNavigate();
@@ -11,6 +14,10 @@ const MenuCustom = () => {
         setState({activeItem: name});
         navigate(`/${name}`);
     }
+
+    React.useEffect(() => {
+        console.log(userState);
+    }, [userState])
 
     return (
         <Menu pointing secondary size='huge' color='teal'>

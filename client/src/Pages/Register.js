@@ -3,6 +3,8 @@ import { Form, Message } from 'semantic-ui-react';
 import { gql, useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 
+import { UserContext } from '../context/user';
+
 const REGISTER_USER = gql`
     mutation registerUser($password: String!, $email: String!, $username: String!) {
         registerUser(email: $email, username: $username, password: $password) {
@@ -15,6 +17,7 @@ const REGISTER_USER = gql`
 `
 
 const Register = () => {
+    const { login } = React.useContext(UserContext);
     const navigate = useNavigate();
     const [state, setState] = React.useState({username: '', email: '', password: '', confirmPassword: ''});
 
@@ -25,6 +28,7 @@ const Register = () => {
         update: (cache, { data: {registerUser: user} }) => {
             console.log(user);
             localStorage.setItem('token', user.token);
+            login(user);
             navigate('/home');
         },
         variables: state

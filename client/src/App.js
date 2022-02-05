@@ -9,6 +9,8 @@ import Register from './Pages/Register';
 import Menu from './components/Menu';
 import NotFound from './components/NotFound';
 
+import { UserProvider } from './context/user';
+
 import './App.css';
 import 'semantic-ui-css/semantic.min.css';
 
@@ -23,17 +25,19 @@ const Layout = () => {
 
 function App() {
     return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<Layout />}>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="*" element={<NotFound />} />
-                </Route>
-            </Routes>
-        </Router>
+        <UserProvider>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<Layout />}>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/home" element={<Home />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="*" element={<NotFound />} />
+                    </Route>
+                </Routes>
+            </Router>
+        </UserProvider>
     );
 }
 
