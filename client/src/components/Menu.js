@@ -12,7 +12,7 @@ const MenuCustom = () => {
     path = path === '/' ? 'home' : path.slice(1);
     path = path.includes('/') ? path.slice(0, path.indexOf('/')) : path;
     const [state, setState] = React.useState({activeItem: path});
-    
+
     const handleItemClick = (e, {name}) => {
         setState({activeItem: name});
         navigate(`/${name}`);

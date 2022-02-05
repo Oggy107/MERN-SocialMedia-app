@@ -56,7 +56,7 @@ const Home = () => {
                             <h1>Error loading posts</h1>
                         ) :
                         (
-                            data.getPosts.map(post => (
+                             data.getPosts.map(post => (
                                 <Grid.Column key={post._id} style={{margin: '1rem 0'}}>
                                     <PostCard post={post} />
                                 </Grid.Column>

@@ -11,8 +11,10 @@ import NotFound from './components/NotFound';
 
 import { UserProvider } from './context/user';
 
-import './App.css';
+import AuthRoute from './utils/AuthRoute';
+
 import 'semantic-ui-css/semantic.min.css';
+import './App.css';
 
 const Layout = () => {
     return (
@@ -29,10 +31,18 @@ function App() {
             <Router>
                 <Routes>
                     <Route path="/" element={<Layout />}>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/home" element={<Home />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
+                        <Route index element={<Home />} />
+                        <Route path="home" element={<Home />} />
+                        <Route path="/login" element={
+                            <AuthRoute>
+                                <Login />
+                            </AuthRoute>
+                        } />
+                        <Route path="/register" element={
+                            <AuthRoute>
+                                <Register />
+                            </AuthRoute>
+                        } />
                         <Route path="*" element={<NotFound />} />
                     </Route>
                 </Routes>
