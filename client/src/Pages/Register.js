@@ -26,8 +26,6 @@ const Register = () => {
 
     const [registerUser, { loading, error: serverError }] = useMutation(REGISTER_USER, {
         update: (cache, { data: {registerUser: user} }) => {
-            console.log(user);
-            localStorage.setItem('token', user.token);
             login(user);
             navigate('/home');
         },

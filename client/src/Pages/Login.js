@@ -26,7 +26,6 @@ const Login = () => {
 
     const [loginUser, { loading, error: serverError }] = useMutation(LOGIN_USER, {
         update: (cache, { data: { loginUser: user}}) => {
-            localStorage.setItem('token', user.token);
             login(user);
             navigate('/home');
         },
