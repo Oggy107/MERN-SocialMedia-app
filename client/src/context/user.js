@@ -1,9 +1,16 @@
 import React from 'react';
+import { gql } from '@apollo/client';
+import { client } from '../ApolloProvider';
 
-if (localStorage.getItem('token'))
-{
-     
+const GET_USER = gql`
+    query getUser($token: String!) {
+    getUser(token: $token) {
+        _id
+        email
+        username
+    }
 }
+`
 
 const UserContext = React.createContext({user: null});
 
@@ -37,6 +44,23 @@ const UserProvider = (props) => {
         dispatch({type: 'LOGOUT'});
     }
 
+    if (localStorage.getItem('token') && !state.user)
+    {
+        const token = localStorage.getItem('token');
+
+        client.query({
+            query: GET_USER,
+            variables: {
+                token
+            }
+        }).then(({data: {getUser}}) => {
+            const user = {...getUser, token};
+            login(user);
+        }).catch(error => {
+            console.error('[ERROR]: ', error);
+        })
+    }
+
     return (
         <UserContext.Provider value={{state, login, logout}}>
             {props.children}
@@ -44,4 +68,4 @@ const UserProvider = (props) => {
     );
 }
 
-export {UserContext, UserProvider};
+export { UserProvider, UserContext };
