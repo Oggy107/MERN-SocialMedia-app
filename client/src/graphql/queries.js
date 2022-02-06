@@ -10,4 +10,37 @@ query getUser($token: String!) {
 }
 `
 
-export { GET_USER };
+const GET_POSTS = gql`
+query getPosts {
+    getPosts {
+        _id
+        body
+        comments {
+            _id
+            body
+            createdAt
+                user {
+                    _id
+                    email
+                    username
+                }
+        }
+        likes {
+            createdAt
+                user {
+                    _id
+                    email
+                    username
+                }
+        }
+        user {
+            _id
+            email
+            username
+        }
+    createdAt
+    }
+}
+`
+
+export { GET_USER, GET_POSTS };
