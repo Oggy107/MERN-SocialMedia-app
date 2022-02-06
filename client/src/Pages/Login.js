@@ -1,23 +1,14 @@
 import React from 'react';
 import { Form, Message } from 'semantic-ui-react';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 
 import { UserContext } from '../context/user';
-
-const LOGIN_USER = gql`
-    mutation loginUser($email: String!, $password: String!) {
-        loginUser(email: $email, password: $password) {
-        username
-        _id
-        email
-        token
-    }
-}
-`
+import { LOGIN_USER } from '../graphql/mutations';
+import { loginValidation } from '../utils/validation';
 
 const Login = () => {
-    const { login } = React.useContext(UserContext);
+    const context = React.useContext(UserContext);
     const navigate = useNavigate();
     const [state, setState] = React.useState({email: '', password: ''});
 
@@ -26,7 +17,7 @@ const Login = () => {
 
     const [loginUser, { loading, error: serverError }] = useMutation(LOGIN_USER, {
         update: (cache, { data: { loginUser: user}}) => {
-            login(user);
+            context.login(user);
             navigate('/home');
         },
         variables: state
@@ -36,29 +27,10 @@ const Login = () => {
         setState({...state, [name]: value});
     }
 
-    const validate = () => {
-        let tempErrorState = {...clientErrorState};
-        const emailRegEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-        tempErrorState = state.password === '' ? {...tempErrorState, passwordError: 'Password is required'} :
-        {...tempErrorState, passwordError: ''};
-
-        tempErrorState = state.email === '' ? {...tempErrorState, emailError: "Email is required"} :
-            !state.email.match(emailRegEx) ? {...tempErrorState, emailError: "Email is invalid"} :
-            {...tempErrorState, emailError: ''};
-            
-        setClientErrorState(tempErrorState);
-
-        if (JSON.stringify(tempErrorState) === JSON.stringify(initialClientErrorState))
-            return true;
-
-        return false;
-    }
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!validate())
+        if (!loginValidation(clientErrorState, setClientErrorState, initialClientErrorState, state))
             return;
 
         loginUser();

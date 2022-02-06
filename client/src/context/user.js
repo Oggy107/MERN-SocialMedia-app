@@ -1,16 +1,7 @@
 import React from 'react';
-import { gql } from '@apollo/client';
 import { client } from '../ApolloProvider';
 
-const GET_USER = gql`
-    query getUser($token: String!) {
-    getUser(token: $token) {
-        _id
-        email
-        username
-    }
-}
-`
+import { GET_USER } from '../graphql/queries';
 
 const UserContext = React.createContext({user: null});
 
