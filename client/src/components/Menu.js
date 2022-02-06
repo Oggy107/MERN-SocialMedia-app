@@ -14,12 +14,11 @@ const MenuCustom = () => {
     const [state, setState] = React.useState({activeItem: path});
 
     const handleItemClick = (e, {name}) => {
-        setState({activeItem: name});
         navigate(`/${name}`);
     }
 
     React.useEffect(() => {
-        setState({activeItem: path})
+        setState({activeItem: decodeURIComponent(path)})
     }, [path])
 
     return (
@@ -34,6 +33,15 @@ const MenuCustom = () => {
                 active={state.activeItem === 'messages'}
                 onClick={handleItemClick}
             />
+            {
+                userState.user && (
+                    <Menu.Item 
+                        name='create post'
+                        active={state.activeItem === 'create post'}
+                        onClick={handleItemClick}
+                    />
+                )
+            }
             <Menu.Menu position='right'>
                 {
                     !userState.user ? (

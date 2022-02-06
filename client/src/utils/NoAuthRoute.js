@@ -3,13 +3,13 @@ import { Navigate, Route } from 'react-router-dom';
 
 import { UserContext } from '../context/user';
 
-const AuthRoute = ({ children }) => {
+const NoAuthRoute = ({ children }) => {
     const { state: {user} } = React.useContext(UserContext);
 
-    if (!user)
+    if (user)
         return Navigate({ to: '/home' });
 
     return children;
 }
 
-export default AuthRoute;
+export default NoAuthRoute;
