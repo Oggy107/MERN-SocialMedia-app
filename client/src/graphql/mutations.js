@@ -53,4 +53,20 @@ mutation createPost($body: String!) {
 }
 `
 
-export { LOGIN_USER, REGISTER_USER, CREATE_POST };
+const LIKE_POST = gql`
+mutation likePost($postId: ID!) {
+    likePost(postId: $postId) {
+        _id
+        likes {
+            user {
+                _id
+                email
+                username
+            },
+            createdAt
+        }
+    }
+}
+`
+
+export { LOGIN_USER, REGISTER_USER, CREATE_POST, LIKE_POST };

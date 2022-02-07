@@ -1,13 +1,11 @@
 import React from 'react';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Grid } from 'semantic-ui-react'
 
-import { UserContext } from '../context/user';
 import PostCard from '../components/PostCard';
 import { GET_POSTS } from '../graphql/queries';
 
 const Home = () => {
-    const { state: {user} } = React.useContext(UserContext);
     const { loading, error, data } = useQuery(GET_POSTS);
 
     return (
