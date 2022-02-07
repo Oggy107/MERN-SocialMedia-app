@@ -8,10 +8,9 @@ const getPosts = async () => {
 const getPost = async (parent, args, context, info) => {
     try {
         const post = await Post.findById(args.postId);
-
         return post;
     } catch (error) {
-        throw new UserInputError(error.message)
+        throw new UserInputError("Inavlid post id");
     }
 }
 

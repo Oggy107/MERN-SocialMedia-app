@@ -6,6 +6,7 @@ import Home from './Pages/Home';
 import Login from './Pages/Login';
 import Register from './Pages/Register';
 import CreatePost from './Pages/CreatePost';
+import SinglePost from './Pages/SinglePost';
 
 import Menu from './components/Menu';
 import NotFound from './components/NotFound';
@@ -35,7 +36,8 @@ function App() {
                     <Route path="/" element={<Layout />}>
                         <Route index element={<Home />} />
                         <Route path="/home" element={<Home />} />
-                        <Route path="/create%20post" element={
+                        <Route path="/home/posts/:postId" element={<SinglePost />} />
+                        <Route path={encodeURIComponent("create post")} element={
                             <AuthRoute>
                                 <CreatePost />
                             </AuthRoute>

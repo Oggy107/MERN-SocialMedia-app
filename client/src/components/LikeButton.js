@@ -1,10 +1,12 @@
 import React from 'react';
 import { useMutation } from '@apollo/client';
 import { Button, Icon, Label } from 'semantic-ui-react';
+import { useNavigate } from 'react-router-dom';
 
 import { LIKE_POST } from '../graphql/mutations';
 
-const LikeButton = ({ likes, userState, postId, navigate }) => {
+const LikeButton = ({ likes, userState, postId }) => {
+    const navigate = useNavigate();
 
     const [likePost] = useMutation(LIKE_POST, {
         variables: { postId }
