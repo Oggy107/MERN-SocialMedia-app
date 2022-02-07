@@ -36,7 +36,7 @@ const PostCard = ({post: { _id, body, createdAt, user, comments, likes }}) => {
             <Card.Content extra>
                     <LikeButton likes={likes} userState={userState} postId={_id} />
                     <CommentButton comments={comments}/>
-                    { userState.user && isMyPost() && <DeleteButton /> }
+                    { userState.user && isMyPost() && <DeleteButton postId={_id}/> }
             </Card.Content>
         </Card>
     );

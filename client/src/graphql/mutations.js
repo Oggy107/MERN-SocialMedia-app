@@ -49,7 +49,14 @@ mutation createPost($body: String!) {
             username
         }
         _id
+        createdAt
     }
+}
+`
+
+const DELETE_POST = gql`
+mutation deletePost($postId: ID!) {
+    deletePost(postId: $postId)
 }
 `
 
@@ -69,4 +76,4 @@ mutation likePost($postId: ID!) {
 }
 `
 
-export { LOGIN_USER, REGISTER_USER, CREATE_POST, LIKE_POST };
+export { LOGIN_USER, REGISTER_USER, CREATE_POST, LIKE_POST, DELETE_POST };

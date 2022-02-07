@@ -56,7 +56,7 @@ const SinglePost = (props) => {
                     <CardContent extra>
                         <LikeButton likes={likes} postId={postId} userState={userState}/>
                         <CommentButton comments={comments}/>
-                        { userState.user && isMyPost() && <DeleteButton />}
+                        { userState.user && isMyPost() && <DeleteButton postId={postId}/>}
                     </CardContent>
                 </Card>
             </Grid.Row>

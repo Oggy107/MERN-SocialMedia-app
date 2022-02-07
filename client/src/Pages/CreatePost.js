@@ -12,11 +12,11 @@ const CreatePost = () => {
 
     const [createPost, { loading, error: serverError }] = useMutation(CREATE_POST, {
         update: (cache, { data }) => {
-            const { getPosts } = cache.readQuery({ query: GET_POSTS });
+            const { getPosts: posts } = cache.readQuery({ query: GET_POSTS });
             cache.writeQuery({
                 query: GET_POSTS,
                 data: {
-                    getPosts: getPosts.concat([data.createPost])
+                    getPosts: posts.concat([data.createPost])
                 }
             });
         },
