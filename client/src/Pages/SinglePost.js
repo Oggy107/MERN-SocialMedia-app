@@ -1,6 +1,7 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import { Grid, Loader, Message, Image, Card, CardContent } from 'semantic-ui-react';
+import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 
 import { GET_POST } from '../graphql/queries';
@@ -11,6 +12,7 @@ import DeleteButton from '../components/DeleteButton';
 
 const SinglePost = (props) => {
     const postId = window.location.pathname.split('/')[3];
+    const navigate = useNavigate();
     const {state: userState} = React.useContext(UserContext);
 
     const { loading, error, data } = useQuery(GET_POST, {
@@ -56,7 +58,7 @@ const SinglePost = (props) => {
                     <CardContent extra>
                         <LikeButton likes={likes} postId={postId} userState={userState}/>
                         <CommentButton comments={comments}/>
-                        { userState.user && isMyPost() && <DeleteButton postId={postId}/>}
+                        { userState.user && isMyPost() && <DeleteButton postId={postId} callback={() => {navigate('/home')}}/>}
                     </CardContent>
                 </Card>
             </Grid.Row>

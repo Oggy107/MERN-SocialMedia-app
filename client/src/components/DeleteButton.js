@@ -5,7 +5,7 @@ import { useMutation } from '@apollo/client';
 import { DELETE_POST } from '../graphql/mutations';
 import { GET_POSTS } from '../graphql/queries';
 
-const DeleteButton = ({ postId }) => {
+const DeleteButton = ({ postId, callback }) => {
     const [open, setOpen] = React.useState(false);
 
     const [deletePost] = useMutation(DELETE_POST, {
@@ -18,6 +18,7 @@ const DeleteButton = ({ postId }) => {
                 }
             })
             setOpen(false);
+            callback && callback();
         },
         variables: { postId }
     });
