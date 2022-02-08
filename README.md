@@ -1,1 +1,1 @@
-# MERN Social Media app (In Development)
+# mern socialmedia app server

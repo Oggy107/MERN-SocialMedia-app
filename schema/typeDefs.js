@@ -31,12 +31,14 @@ const typeDefs = gql`
         comments: [Comment]!,
         likes: [Like]!,
         _id: ID!,
-        user: UserPublic!
+        user: UserPublic!,
+        createdAt: String!,
     }
 
     type Query {
         getPosts: [Post],
         getPost(postId: ID!): Post
+        getUser(token: String!): UserPublic!
     }
 
     type Mutation {

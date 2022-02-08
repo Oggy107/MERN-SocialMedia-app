@@ -24,7 +24,7 @@ const postSchema = new mongoose.Schema({
                     ref: 'users'
                 }
             },
-            createdAt: String,
+            createdAt: Date,
         }
     ],
     likes: [
@@ -37,7 +37,7 @@ const postSchema = new mongoose.Schema({
                     ref: 'users'
                 }
             },
-            createdAt: String
+            createdAt: Date
         }
     ],
     user: {
