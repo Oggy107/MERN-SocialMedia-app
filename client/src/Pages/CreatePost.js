@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMutation } from '@apollo/client';
-import { Form, Message } from 'semantic-ui-react';
+import { Form } from 'semantic-ui-react';
 import { useNavigate } from 'react-router-dom';
 
 import { CREATE_POST } from '../graphql/mutations';
@@ -23,6 +23,7 @@ const CreatePost = () => {
                     getPosts: posts.concat([data.createPost])
                 }
             });
+            navigate('/home');
         },
         onError: (error) => {
             error.networkError && error.networkError.result.errors.forEach(err => {
