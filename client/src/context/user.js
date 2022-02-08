@@ -49,6 +49,7 @@ const UserProvider = (props) => {
             login(user);
         }).catch(error => {
             console.error('[ERROR]: ', error);
+            logout();
         })
     }
 

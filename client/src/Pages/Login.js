@@ -1,5 +1,4 @@
 import React from 'react';
-import { Form, Message } from 'semantic-ui-react';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 
@@ -7,9 +6,12 @@ import { UserContext } from '../context/user';
 import { LOGIN_USER } from '../graphql/mutations';
 import { loginValidation } from '../utils/validation';
 
+import MyForm from '../components/MyForm';
+
 const Login = () => {
     const context = React.useContext(UserContext);
     const navigate = useNavigate();
+
     const [state, setState] = React.useState({email: '', password: ''});
 
     const initialClientErrorState = {emailError: '', passwordError: ''};
@@ -20,12 +22,22 @@ const Login = () => {
             context.login(user);
             navigate('/home');
         },
+        onError: (error) => {
+            error.networkError && error.networkError.result.errors.forEach(err => {
+                console.error(err.extensions.code, err.message);
+            });
+        },
         variables: state
     });
 
     const handleChange = (e, {name, value}) => {
         setState({...state, [name]: value});
     }
+
+    React.useEffect(() => {
+        if (context.state.user)
+            navigate('/home');
+    }, [context.state.user])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -39,29 +51,16 @@ const Login = () => {
     return (
         <div className='form-container'>
             <h1>Login</h1>
-            <Form onSubmit={handleSubmit} error={serverError ? true : false}>
-                <Form.Input 
-                    label="Email"
-                    placeholder="example@gmail.com"
-                    name="email"
+                <MyForm
                     onChange={handleChange}
-                    error={clientErrorState.emailError ? clientErrorState.emailError : null}
+                    onSubmit={handleSubmit}
+                    error={!!serverError}
+                    errorContent={serverError && serverError.message}
+                    buttonContent="Login"
+                    buttonLoading={loading}
+                    email={{placeholder: "example@gmail.com", error: clientErrorState.emailError ? clientErrorState.emailError : null}}
+                    password={{type: "password", error: clientErrorState.passwordError ? clientErrorState.passwordError : null}}
                 />
-                <Form.Input 
-                    label="Password"
-                    type="password"
-                    name="password"
-                    onChange={handleChange}
-                    error={clientErrorState.passwordError ? clientErrorState.passwordError : null}
-                />
-                <Message error header={serverError && serverError.name} content={serverError && serverError.message} />
-                <Form.Button 
-                    type="submit"
-                    content="Login"
-                    loading={loading}
-                    primary
-                />
-            </Form>
         </div>
     );
 };

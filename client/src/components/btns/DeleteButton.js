@@ -2,8 +2,8 @@ import React from 'react';
 import { Button, Icon, Confirm, Popup } from 'semantic-ui-react';
 import { useMutation } from '@apollo/client';
 
-import { DELETE_POST, UNCOMMENT_POST } from '../graphql/mutations';
-import { GET_POSTS } from '../graphql/queries';
+import { DELETE_POST, UNCOMMENT_POST } from '../../graphql/mutations';
+import { GET_POSTS } from '../../graphql/queries';
 
 const DeleteButton = ({ postId, commentId, callback }) => {
     const [open, setOpen] = React.useState(false);
@@ -12,14 +12,14 @@ const DeleteButton = ({ postId, commentId, callback }) => {
 
     const [deleteData] = useMutation(MUTATION, {
         update(cache) {
-            const { getPosts: posts } = cache.readQuery({ query: GET_POSTS});
+            const data = cache.readQuery({ query: GET_POSTS});
 
-            if (!commentId)
+            if (!commentId && data)
             {
                 cache.writeQuery({
                     query: GET_POSTS,
                     data: {
-                        getPosts: posts.filter(post => post._id !== postId)
+                        getPosts: data.getPosts.filter(post => post._id !== postId)
                     }
                 })
             }

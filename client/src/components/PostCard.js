@@ -1,13 +1,12 @@
 import React from 'react';
 import moment from 'moment';
-import { useMutation } from '@apollo/client';
-import { Card, Image, Button, Label, Icon } from 'semantic-ui-react';
+import { Card, Image } from 'semantic-ui-react';
 import { useNavigate } from 'react-router-dom';
 
 import { UserContext } from '../context/user';
-import LikeButton from './LikeButton';
-import CommentButton from './CommentButton';
-import DeleteButton from './DeleteButton';
+import LikeButton from './btns/LikeButton';
+import CommentButton from './btns/CommentButton';
+import DeleteButton from './btns/DeleteButton';
 
 const PostCard = ({post: { _id, body, createdAt, user, comments, likes }}) => {
     const { state: userState } = React.useContext(UserContext);

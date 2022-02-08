@@ -13,9 +13,6 @@ import NotFound from './components/NotFound';
 
 import { UserProvider } from './context/user';
 
-import AuthRoute from './utils/AuthRoute';
-import NoAuthRoute from './utils/NoAuthRoute';
-
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
 
@@ -37,21 +34,9 @@ function App() {
                         <Route index element={<Home />} />
                         <Route path="/home" element={<Home />} />
                         <Route path="/home/posts/:postId" element={<SinglePost />} />
-                        <Route path={encodeURIComponent("create post")} element={
-                            <AuthRoute>
-                                <CreatePost />
-                            </AuthRoute>
-                        } />
-                        <Route path="/login" element={
-                            <NoAuthRoute>
-                                <Login />
-                            </NoAuthRoute>
-                        } />
-                        <Route path="/register" element={
-                            <NoAuthRoute>
-                                <Register />
-                            </NoAuthRoute>
-                        } />
+                        <Route path={encodeURIComponent("create post")} element={<CreatePost />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
                         <Route path="*" element={<NotFound />} />
                     </Route>
                 </Routes>

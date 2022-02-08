@@ -1,12 +1,20 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import { Grid } from 'semantic-ui-react'
+import { Grid, Loader } from 'semantic-ui-react'
 
 import PostCard from '../components/PostCard';
 import { GET_POSTS } from '../graphql/queries';
 
+import ErrorMessage from '../components/ErrorMessage';
+
 const Home = () => {
     const { loading, error, data } = useQuery(GET_POSTS);
+
+    if (loading)
+        return <Loader active />
+
+    if (error)
+        return <ErrorMessage />
 
     return (
         <React.Fragment>
@@ -16,20 +24,11 @@ const Home = () => {
             <Grid stackable columns={3}>
                 <Grid.Row>
                     {
-                        loading ? (
-                            <h1>Loding posts...</h1>
-                        ) :
-                        error ? 
-                        (
-                            <h1>Error loading posts</h1>
-                        ) :
-                        (
-                            data.getPosts.map(post => (
-                                <Grid.Column key={post._id} style={{margin: '1rem 0'}}>
-                                    <PostCard post={post} />
-                                </Grid.Column>
-                            ))
-                        )
+                        data.getPosts.map(post => (
+                            <Grid.Column key={post._id} style={{margin: '1rem 0'}}>
+                                <PostCard post={post} />
+                            </Grid.Column>
+                        ))
                     }
                 </Grid.Row>
             </Grid>

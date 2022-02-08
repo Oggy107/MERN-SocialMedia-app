@@ -1,15 +1,20 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import { Grid, Loader, Message, Image, Card, CardContent, GridColumn } from 'semantic-ui-react';
+import { Grid, Loader, Image, Card, CardContent, GridColumn } from 'semantic-ui-react';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 
-import { GET_POST } from '../graphql/queries';
-import LikeButton from '../components/LikeButton';
-import CommentButton from '../components/CommentButton';
 import { UserContext } from '../context/user';
-import DeleteButton from '../components/DeleteButton';
+
+import { GET_POST } from '../graphql/queries';
+
+import LikeButton from '../components/btns/LikeButton';
+import CommentButton from '../components/btns/CommentButton';
+import DeleteButton from '../components/btns/DeleteButton';
+
 import CommentPost from '../components/CommentPost';
+
+import ErrorMessage from '../components/ErrorMessage';
 
 const SinglePost = (props) => {
     const postId = window.location.pathname.split('/')[3];
@@ -27,9 +32,14 @@ const SinglePost = (props) => {
     if (error)
     {
         return (
-            <div className="ui form-container">
-                <Message error>{error.message}</Message>
-            </div>
+            <ErrorMessage content={error.message}/>
+        )
+    }
+
+    if (!data.getPost)
+    {
+        return (
+            <ErrorMessage content={`No post found with id ${postId}`}/>
         )
     }
 

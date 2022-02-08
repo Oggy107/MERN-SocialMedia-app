@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client';
 import { Button, Icon, Label, Popup } from 'semantic-ui-react';
 import { useNavigate } from 'react-router-dom';
 
-import { LIKE_POST } from '../graphql/mutations';
+import { LIKE_POST } from '../../graphql/mutations';
 
 const LikeButton = ({ likes, userState, postId }) => {
     const navigate = useNavigate();
@@ -36,7 +36,7 @@ const LikeButton = ({ likes, userState, postId }) => {
 
     return (
         <Popup 
-            content = {isLiked() ? 'Unlike' : 'Like'}
+            content = {userState.user && isLiked() ? 'Unlike' : 'Like'}
             mouseEnterDelay = {1500}
             inverted
             trigger = {

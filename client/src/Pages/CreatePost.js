@@ -1,14 +1,18 @@
 import React from 'react';
 import { useMutation } from '@apollo/client';
-import { Form, Message, TextArea } from 'semantic-ui-react';
+import { Form, Message } from 'semantic-ui-react';
+import { useNavigate } from 'react-router-dom';
 
 import { CREATE_POST } from '../graphql/mutations';
 import { GET_POSTS } from '../graphql/queries';
+import { UserContext } from '../context/user';
+
+import ErrorMessage from '../components/ErrorMessage';
 
 const CreatePost = () => {
-    const [state, setState] = React.useState({body: ''});
-    const initialClientErrorState = {bodyError: ''};
-    const [clientErrorState, setClientErrorState] = React.useState(initialClientErrorState);
+    const {state: userState} = React.useContext(UserContext);
+    const navigate = useNavigate();
+    const [postBody, setPostBody] = React.useState('');
 
     const [createPost, { loading, error: serverError }] = useMutation(CREATE_POST, {
         update: (cache, { data }) => {
@@ -20,52 +24,44 @@ const CreatePost = () => {
                 }
             });
         },
-        variables: state,
+        onError: (error) => {
+            error.networkError && error.networkError.result.errors.forEach(err => {
+                console.error(err.extensions.code, err.message);
+            });
+        },
+        variables: {body: postBody},
     });
 
-    const validate = () => {
-        let valid = true;
-
-        if (!state.body)
-        {
-            setClientErrorState({...clientErrorState, bodyError: 'Body is required'});
-            valid = false;
-        }
-        else
-            setClientErrorState(initialClientErrorState);
-
-        return valid;
-    }
-
     const handleChange = (e, { value }) => {
-        setState({body: value});
+        setPostBody(value);
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        if (!validate())
-            return;
-
         createPost();
     }
+
+    React.useEffect(() => {
+        if (!userState.user)
+            navigate('/home');
+    }, [userState.user])
 
     return (
         <div className="form-container">
             <h1>Create a post</h1>
-            <Form onSubmit={handleSubmit} error={!!(serverError || clientErrorState.bodyError)}>
-                <TextArea
+            <Form onSubmit={handleSubmit} error={!!serverError}>
+                <Form.TextArea
                     placeholder="anything..."
                     name="body"
                     onChange={handleChange}
-                    style={{marginBottom: "1rem"}}
                 />
-                <Message error header="Error"list={[clientErrorState.bodyError, serverError && serverError.message]}/>
-                <Form.Button 
+                <ErrorMessage />
+                <Form.Button
                     type="submit"
                     content="submit"
                     loading={loading}
                     primary
+                    disabled={postBody.trim() === ''}
                 />
             </Form>
         </div>
