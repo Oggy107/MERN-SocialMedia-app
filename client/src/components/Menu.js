@@ -28,11 +28,6 @@ const MenuCustom = () => {
                 active={state.activeItem === 'home'}
                 onClick={handleItemClick}
             />
-            <Menu.Item
-                name='messages'
-                active={state.activeItem === 'messages'}
-                onClick={handleItemClick}
-            />
             {
                 userState.user && (
                     <Menu.Item 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMutation } from '@apollo/client';
-import { Button, Icon, Label, Popup } from 'semantic-ui-react';
+import { Button, Icon, Label } from 'semantic-ui-react';
 import { useNavigate } from 'react-router-dom';
 
 import { LIKE_POST } from '../../graphql/mutations';
@@ -35,22 +35,15 @@ const LikeButton = ({ likes, userState, postId }) => {
     }
 
     return (
-        <Popup 
-            content = {userState.user && isLiked() ? 'Unlike' : 'Like'}
-            mouseEnterDelay = {1500}
-            inverted
-            trigger = {
-                <Button as='div' labelPosition='right'>
-                    <Button basic={userState.user ? !isLiked() : true} color='teal' onClick={handleLikePost} >
-                        <Icon name='heart' size='large' />
-                    </Button>
-                    <Label basic color='teal' pointing='left'>
-                        {likes.length}
-                    </Label>
-                </Button>
-            }
-        />
-  );
+        <Button as='div' labelPosition='right'>
+            <Button basic={userState.user ? !isLiked() : true} color='teal' onClick={handleLikePost} >
+                <Icon name='heart' size='large' />
+            </Button>
+            <Label basic color='teal' pointing='left'>
+                {likes.length}
+            </Label>
+        </Button>
+    );
 };
 
 export default LikeButton;

@@ -58,7 +58,7 @@ const SinglePost = (props) => {
             <Grid.Row>
                 <Grid.Column width={2}>
                     <Image
-                        floated='right'
+                        centered
                         size='small'
                         src='https://react.semantic-ui.com/images/avatar/large/molly.png'
                     />
