@@ -2,7 +2,9 @@ import React from 'react';
 import { useMutation } from '@apollo/client';
 
 import { COMMENT_POST } from '../graphql/mutations';
-import { Form, Message } from 'semantic-ui-react';
+import { Form } from 'semantic-ui-react';
+
+import ErrorMessage from './ErrorMessage';
 
 const CommentPost = ({postId}) => {
     const [commentBody, setCommentBody] = React.useState('');
@@ -27,7 +29,7 @@ const CommentPost = ({postId}) => {
                     value={commentBody}
                     onChange={handleChange}
                 />
-                <Message error header='Error' content={serverError && serverError.message}/>
+                <ErrorMessage />
                 <Form.Button
                     content='Comment'
                     labelPosition='left'

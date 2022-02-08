@@ -21,11 +21,6 @@ const Register = () => {
             context.login(user);
             navigate('/home');
         },
-        onError: (error) => {
-            error.networkError && error.networkError.result.errors.forEach(err => {
-                console.error(err.extensions.code, err.message);
-            });
-        },
         variables: state
     });
 
