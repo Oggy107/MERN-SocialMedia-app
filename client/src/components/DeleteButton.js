@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, Confirm } from 'semantic-ui-react';
+import { Button, Icon, Confirm, Popup } from 'semantic-ui-react';
 import { useMutation } from '@apollo/client';
 
 import { DELETE_POST, UNCOMMENT_POST } from '../graphql/mutations';
@@ -46,9 +46,16 @@ const DeleteButton = ({ postId, commentId, callback }) => {
 
     return (
         <React.Fragment>
-            <Button basic onClick={handleClick} negative floated='right'>
-                <Icon name='trash alternate' size='large' style={{margin: "0"}}/>
-            </Button>
+            <Popup 
+            content = {commentId ? 'Delete Comment' : 'Delete Post'}
+            mouseEnterDelay = {1500}
+            inverted
+            trigger = {
+                <Button basic onClick={handleClick} negative floated='right'>
+                    <Icon name='trash alternate' size='large' style={{margin: "0"}}/>
+                </Button>
+            }
+            />
             <Confirm 
                 open={open}
                 onCancel={handleCancel}
