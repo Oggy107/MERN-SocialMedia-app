@@ -2,25 +2,31 @@ import React from 'react';
 import { Button, Icon, Confirm } from 'semantic-ui-react';
 import { useMutation } from '@apollo/client';
 
-import { DELETE_POST } from '../graphql/mutations';
+import { DELETE_POST, UNCOMMENT_POST } from '../graphql/mutations';
 import { GET_POSTS } from '../graphql/queries';
 
-const DeleteButton = ({ postId, callback }) => {
+const DeleteButton = ({ postId, commentId, callback }) => {
     const [open, setOpen] = React.useState(false);
 
-    const [deletePost] = useMutation(DELETE_POST, {
+    const MUTATION = commentId ? UNCOMMENT_POST : DELETE_POST;
+
+    const [deleteData] = useMutation(MUTATION, {
         update(cache) {
             const { getPosts: posts } = cache.readQuery({ query: GET_POSTS});
-            cache.writeQuery({
-                query: GET_POSTS,
-                data: {
-                    getPosts: posts.filter(post => post._id !== postId)
-                }
-            })
+
+            if (!commentId)
+            {
+                cache.writeQuery({
+                    query: GET_POSTS,
+                    data: {
+                        getPosts: posts.filter(post => post._id !== postId)
+                    }
+                })
+            }
             setOpen(false);
             callback && callback();
         },
-        variables: { postId }
+        variables: { postId, commentId }
     });
 
     const handleClick = (e) => {
@@ -35,7 +41,7 @@ const DeleteButton = ({ postId, callback }) => {
 
     const handleConfirm = (e) => {
         e.stopPropagation();
-        deletePost();
+        deleteData();
     }
 
     return (
@@ -47,8 +53,8 @@ const DeleteButton = ({ postId, callback }) => {
                 open={open}
                 onCancel={handleCancel}
                 onConfirm={handleConfirm}
-                header='Delete Post'
-                content='Are you sure you want to delete this post?'
+                header={commentId ? 'Delete Comment' : 'Delete Post'}
+                content={`Are you sure you want to delete this ${commentId ? 'comment' : 'post'}?`}
             />
         </React.Fragment>
     )

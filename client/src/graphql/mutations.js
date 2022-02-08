@@ -76,4 +76,40 @@ mutation likePost($postId: ID!) {
 }
 `
 
-export { LOGIN_USER, REGISTER_USER, CREATE_POST, LIKE_POST, DELETE_POST };
+const COMMENT_POST = gql`
+mutation commentPost($postId: ID!, $body: String!) {
+    commentPost(postId: $postId, body: $body) {
+        _id
+        comments {
+            body
+            createdAt
+            user {
+                _id
+                email
+                username
+            }
+            _id
+        }
+    }
+}
+`
+
+const UNCOMMENT_POST = gql`
+mutation uncommentPost($postId: ID!, $commentId: ID!) {
+    uncommentPost(postId: $postId, commentId: $commentId) {
+        _id
+        comments {
+            body
+            createdAt
+            user {
+                _id
+                email
+                username
+            }
+            _id
+        }
+    }
+}
+`
+
+export { LOGIN_USER, REGISTER_USER, CREATE_POST, LIKE_POST, DELETE_POST, UNCOMMENT_POST, COMMENT_POST };
