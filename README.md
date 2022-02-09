@@ -13,4 +13,6 @@ Built using MERN Stack
 * Nodejs
 * Graphql
 
-### React client using this server is [here](https://github.com/Oggy107/MERN-SocialMedia-App-Client.git)
+### React client using this server
+* [Github repo](https://github.com/Oggy107/MERN-SocialMedia-App-Client.git)
+* [live app](https://mern-socialmedia-app-client.herokuapp.com/)
